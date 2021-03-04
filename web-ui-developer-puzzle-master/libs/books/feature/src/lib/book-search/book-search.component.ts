@@ -20,9 +20,9 @@ import { Subscription } from 'rxjs';
 })
 export class BookSearchComponent implements OnInit, OnDestroy {
   books: ReadingListBook[];
-  spinner: boolean = false;
+  spinner = false;
   componentSubcription: Subscription[] = [];
-  errFlag: boolean = false;
+  errFlag = false;
 
   searchForm = this.fb.group({
     term: ''
