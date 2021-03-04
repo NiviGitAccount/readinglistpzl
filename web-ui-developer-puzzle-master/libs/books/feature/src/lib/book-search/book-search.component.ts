@@ -38,7 +38,24 @@ export class BookSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.componentSubcription.push(
+
+      this.searchForm.valueChanges.subscribe(term => {
+        this.spinner = true;
+        this.store.dispatch(searchBooks({ term: this.searchTerm }));
+        this.componentSubcription.push(
+          this.store.select(getBooksError).subscribe((err => {
+            if (err) {
+              this.spinner = false;
+              this.errFlag = true;
+            } else {
+              this.errFlag = false;
+            }
+          }))
+        );
+      }),
+
       this.store.select(getAllBooks).subscribe(books => {
         this.books = books;
       }),
