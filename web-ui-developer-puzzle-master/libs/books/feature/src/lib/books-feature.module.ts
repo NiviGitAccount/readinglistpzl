@@ -11,6 +11,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { TotalCountComponent } from './total-count/total-count.component';
 import { ReadingListComponent } from './reading-list/reading-list.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const EXPORTS = [
   BookSearchComponent,
@@ -26,6 +27,7 @@ const EXPORTS = [
     MatIconModule,
     MatInputModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([
@@ -36,4 +38,4 @@ const EXPORTS = [
   exports: [...EXPORTS],
   declarations: [...EXPORTS]
 })
-export class BooksFeatureModule {}
+export class BooksFeatureModule { }
