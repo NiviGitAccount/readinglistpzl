@@ -68,7 +68,7 @@ export class BookSearchComponent implements OnInit, OnDestroy {
     const snackBarRef = this._snackBar.open("Added to Reading List", "Undo", {
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      duration: 3000,
+      duration: 2000,
     });
 
     snackBarRef.onAction().subscribe(() => {
