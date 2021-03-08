@@ -13,7 +13,7 @@
   </mat-form-field>
 </form>
 <div *ngIf="spinner">
-    <mat-spinner></mat-spinner>
+    <mat-spinner id="spinner"></mat-spinner>
 </div>
 <div *ngIf="errFlag" class="alert alert-danger">
   Something went wrong! Couldn't fetch Book details for the given search term!
@@ -41,6 +41,7 @@
               color="primary"
               (click)="addBookToReadingList(b)"
               [disabled]="b.isAdded"
+              data-testing="book-item-read"
             >
               Want to Read
             </button>
