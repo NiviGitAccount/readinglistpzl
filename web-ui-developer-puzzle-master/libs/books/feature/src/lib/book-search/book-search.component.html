@@ -1,19 +1,14 @@
 <form [formGroup]="searchForm" (submit)="searchBooks()">
   <mat-form-field floatLabel="never">
-    <input
-      autoFocus
-      matInput
-      type="search"
-      placeholder="Search for books to add to your reading list"
-      formControlName="term"
-    />
+    <input autoFocus matInput type="search" placeholder="Search for books to add to your reading list"
+      formControlName="term" />
     <button mat-icon-button matSuffix aria-label="search">
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
 </form>
 <div *ngIf="spinner">
-    <mat-spinner></mat-spinner>
+  <mat-spinner></mat-spinner>
 </div>
 <div *ngIf="errFlag" class="alert alert-danger">
   Something went wrong! Couldn't fetch Book details for the given search term!
@@ -26,7 +21,7 @@
       </div>
       <div class="book--content">
         <div class="book--content--cover">
-          <img src="{{ b.coverUrl }}" alt="Book cover image"/>
+          <img src="{{ b.coverUrl }}" alt="Book cover image" />
         </div>
         <div class="book--content--info">
           <div><strong>Author:</strong> {{ b.authors.join(',') }}</div>
@@ -36,13 +31,9 @@
           </div>
           <p [innerHTML]="b.description"></p>
           <div>
-            <button
-              mat-flat-button
-              color="primary"
-              (click)="addBookToReadingList(b)"
-              [disabled]="b.isAdded"
-            >
-              Want to Read
+            <button mat-flat-button color="primary" (click)="addBookToReadingList(b)"
+              [disabled]="b.isAdded || b.finished">
+              {{b.finished?'Finished':'Want to Read'}}
             </button>
           </div>
         </div>
@@ -54,9 +45,7 @@
   <div class="empty">
     <p>
       Try searching for a topic, for example "<button aria-label="JavaScript" (click)="searchExample()"
-      class="btn-link"
-        >JavaScript</button
-      >".
+        class="btn-link">JavaScript</button>".
     </p>
   </div>
 </ng-template>
