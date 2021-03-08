@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class BooksService {
-  constructor(private readonly http: HttpService) {}
+  constructor(private readonly http: HttpService) { }
 
   search(term: string): Observable<Book[]> {
     if (!term) {
@@ -13,7 +13,7 @@ export class BooksService {
     }
 
     return this.http
-      .get(`https://www.googleapis.com/books/v1/volumes?q=${term}`)
+      .get(`https://www.googleapis.com/books/v1/volumes?country=in&&q=${term}`)
       .pipe(
         map(resp => {
           return resp.data.items.map(item => {
