@@ -82,6 +82,23 @@ describe('ProductsListComponent', () => {
     expect(component.errorContent).toBe("not found");
   });
 
+  it('should display No result found error message', () => {
+    component.searchForm.value.term = 'java123345435843fgjdsfj';
+    store.overrideSelector(getBooksLoaded, false);
+    store.overrideSelector(getBooksError, {
+      error: {
+        statusCode: 422,
+        message: "not found"
+      }
+    })
+    store.refreshState();
+    component.searchBooks();
+    fixture.detectChanges();
+    expect(component.books.length).toBe(0);
+    expect(component.errorFlag).toBe(true);
+    expect(component.errorContent).toBe("not found");
+  });
+
   it('should display invalid input error message', () => {
     fixture.detectChanges();
     component.searchForm.value.term = '  ';
