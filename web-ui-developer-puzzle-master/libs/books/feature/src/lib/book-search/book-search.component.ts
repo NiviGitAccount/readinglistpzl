@@ -22,7 +22,9 @@ export class BookSearchComponent implements OnInit, OnDestroy {
   books: ReadingListBook[];
   spinner = false;
   componentSubcription: Subscription[] = [];
-  errFlag = false;
+  errorFlag = false;
+  previousSearchTerm = '';
+  errorContent = '';
 
   searchForm = this.fb.group({
     term: ''
@@ -64,6 +66,7 @@ export class BookSearchComponent implements OnInit, OnDestroy {
         if (!loaded && this.searchForm.value.term) {
           this.spinner = true;
         } else {
+          this.previousSearchTerm = this.searchForm.value.term;
           this.spinner = false;
         }
       }))
@@ -87,20 +90,30 @@ export class BookSearchComponent implements OnInit, OnDestroy {
 
   searchBooks() {
     if (this.searchForm.value.term) {
-      this.spinner = true;
-      this.store.dispatch(searchBooks({ term: this.searchTerm }));
-      this.componentSubcription.push(
-        this.store.select(getBooksError).subscribe((err => {
-          if (err) {
-            this.spinner = false;
-            this.errFlag = true;
-          } else {
-            this.errFlag = false;
-          }
-        }))
-      );
+      if (this.previousSearchTerm !== this.searchForm.value.term) {
+        this.spinner = true;
+        this.store.dispatch(searchBooks({ term: this.searchTerm }));
+        this.componentSubcription.push(
+          this.store.select(getBooksError).subscribe((errorResponse => {
+            if (errorResponse) {
+              this.store.dispatch(clearSearch());
+              this.spinner = false;
+              this.errorFlag = true;
+              if (errorResponse['error'] && (errorResponse['error']['statusCode'] === 404
+                || errorResponse['error']['statusCode'] === 422)) {
+                this.errorContent = errorResponse['error']['message'];
+              } else {
+                this.errorContent = "Something went wrong! Couldn't fetch Book details for the given search term!";
+              }
+            } else {
+              this.errorFlag = false;
+            }
+          }))
+        );
+      }
     } else {
       this.store.dispatch(clearSearch());
+      this.errorFlag = false;
     }
   }
 
