@@ -11,7 +11,6 @@ export class BooksEffects {
   searchBooks$ = createEffect(() =>
     this.actions$.pipe(
       ofType(BooksActions.searchBooks),
-      debounceTime(500),
       switchMap((action) =>
         this.http.get<Book[]>(`/api/books/search?q=${action.term}`).pipe(
           map((data) => BooksActions.searchBooksSuccess({ books: data })),

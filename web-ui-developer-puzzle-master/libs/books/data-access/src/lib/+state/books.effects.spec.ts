@@ -1,4 +1,4 @@
-import { discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { ReplaySubject } from 'rxjs';
@@ -28,20 +28,21 @@ describe('BooksEffects', () => {
   });
 
   describe('loadBooks$', () => {
-    it('should work', fakeAsync(() => {
+
+    it('should work', done => {
       actions = new ReplaySubject();
       actions.next(BooksActions.searchBooks({ term: '' }));
-      tick(500);
+
       effects.searchBooks$.subscribe(action => {
         expect(action).toEqual(
           BooksActions.searchBooksSuccess({ books: [createBook('A')] })
         );
-        httpMock.expectOne('/api/books/search?q=').flush([createBook('A')]);
+        done();
       });
-      discardPeriodicTasks();
 
       httpMock.expectOne('/api/books/search?q=').flush([createBook('A')]);
     });
+
 
     it('should invoke searchBooksFailure action on SEARCH fail', done => {
       actions = new ReplaySubject();
