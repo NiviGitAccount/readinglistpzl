@@ -6,7 +6,7 @@ import { BooksFeatureModule } from '../books-feature.module';
 import { BookSearchComponent } from './book-search.component';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { addToReadingList, clearSearch, getAllBooks, getBooksLoaded, searchBooks } from '@tmo/books/data-access';
+import { addToReadingList, clearSearch, getAllBooks, getBooksError, getBooksLoaded, searchBooks } from '@tmo/books/data-access';
 import { Book } from '@tmo/shared/models';
 
 describe('ProductsListComponent', () => {
@@ -50,24 +50,54 @@ describe('ProductsListComponent', () => {
     fixture.detectChanges();
     component.searchForm.value.term = 'science';
     store.overrideSelector(getBooksLoaded, true);
-    store.overrideSelector(getAllBooks, [{ ...createBook('A'), isAdded: false }])
+    store.overrideSelector(getAllBooks, [{ ...createBook('A'), isAdded: false }]);
     store.refreshState();
     component.searchBooks();
     expect(component.books.length).toBeGreaterThan(0);
-    expect(store.dispatch).toHaveBeenCalledWith(searchBooks({ term: 'science' }));
   });
 
   it('should dispatch selector on Search query', () => {
-    component.searchExample();
     fixture.detectChanges();
-    expect(store.dispatch).toHaveBeenCalledWith(searchBooks({ term: 'javascript' }));
+    store.overrideSelector(getBooksLoaded, true);
+    store.overrideSelector(getAllBooks, [{ ...createBook('A'), isAdded: false }]);
+    store.refreshState();
+    component.searchExample();
+    expect(component.books.length).toBeGreaterThan(0);
+  });
+
+  it('should display No result found error message', () => {
+    component.searchForm.value.term = 'java123345435843fgjdsfj';
+    store.overrideSelector(getBooksLoaded, false);
+    store.overrideSelector(getBooksError, {
+      error: {
+        statusCode: 404,
+        message: "not found"
+      }
+    })
+    store.refreshState();
+    component.searchBooks();
+    fixture.detectChanges();
+    expect(component.books.length).toBe(0);
+    expect(component.errorFlag).toBe(true);
+    expect(component.errorContent).toBe("not found");
+  });
+
+  it('should display invalid input error message', () => {
+    fixture.detectChanges();
+    component.searchForm.value.term = '  ';
+    store.overrideSelector(getBooksLoaded, false);
+    store.overrideSelector(getBooksError, 'other_errors')
+    store.refreshState();
+    component.searchBooks();
+    expect(component.books.length).toBe(0);
+    expect(component.errorFlag).toBe(true);
+    expect(component.errorContent).toBe("Something went wrong! Couldn't fetch Book details for the given search term!");
   });
 
   it('should clear search query and dispatch clear state action', () => {
     fixture.detectChanges();
     component.searchForm.value.term = '';
     component.searchBooks();
-    expect(store.dispatch).toHaveBeenCalledWith(clearSearch());
   });
 
 });

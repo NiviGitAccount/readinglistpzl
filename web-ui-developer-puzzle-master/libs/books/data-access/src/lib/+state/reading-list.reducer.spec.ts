@@ -18,6 +18,15 @@ describe('Books Reducer', () => {
       );
     });
 
+    it('init should initialize the book store values', () => {
+
+      const action = ReadingListActions.init();
+
+      const result: State = reducer(initialState, action);
+
+      expect(result.loaded).toBe(false);
+    });
+
     it('loadBooksSuccess should load books from reading list', () => {
       const list = [
         createReadingListItem('A'),
@@ -48,6 +57,17 @@ describe('Books Reducer', () => {
       });
 
       const result: State = reducer(state, action);
+      expect(result.ids).toEqual(['A', 'B']);
+    });
+
+
+    it('removeFromReadingList should remove book from reading list', () => {
+      const action = ReadingListActions.removeFromReadingList({
+        item: createReadingListItem('C')
+      });
+
+      const result: State = reducer(state, action);
+
       expect(result.ids).toEqual(['A', 'B']);
     });
 
