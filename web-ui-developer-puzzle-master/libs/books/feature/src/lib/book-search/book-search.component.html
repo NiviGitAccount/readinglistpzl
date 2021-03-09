@@ -6,6 +6,7 @@
       type="search"
       placeholder="Search for books to add to your reading list"
       formControlName="term"
+      aria-label="search input"
     />
     <button mat-icon-button matSuffix aria-label="search">
       <mat-icon>search</mat-icon>
@@ -15,8 +16,8 @@
 <div *ngIf="spinner">
     <mat-spinner id="spinner"></mat-spinner>
 </div>
-<div *ngIf="errFlag" class="alert alert-danger">
-  Something went wrong! Couldn't fetch Book details for the given search term!
+<div *ngIf="errorFlag" class="alert alert-danger">
+  {{errorContent}}
 </div>
 <ng-container *ngIf="searchTerm && !spinner; else empty">
   <div class="book-grid">
@@ -26,7 +27,7 @@
       </div>
       <div class="book--content">
         <div class="book--content--cover">
-          <img src="{{ b.coverUrl }}" alt="Book cover image"/>
+          <img src="{{ b.coverUrl }}" alt="image"/>
         </div>
         <div class="book--content--info">
           <div><strong>Author:</strong> {{ b.authors.join(',') }}</div>

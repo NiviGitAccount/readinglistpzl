@@ -35,6 +35,12 @@ describe('ReadingList Selectors', () => {
   });
 
   describe('Books Selectors', () => {
+
+    it('getAllBooks() should return the list of Books', () => {
+      const results = ToReadSelectors.getAllBooks(state);
+
+      expect(results.length).toBe(3);
+    });
     it('getReadingList() should return the list of Books', () => {
       const results = ToReadSelectors.getReadingList(state);
 
