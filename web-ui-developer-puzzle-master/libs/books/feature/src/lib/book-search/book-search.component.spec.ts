@@ -6,7 +6,7 @@ import { BooksFeatureModule } from '../books-feature.module';
 import { BookSearchComponent } from './book-search.component';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { addToReadingList, clearSearch, getAllBooks, getBooksError, getBooksLoaded, searchBooks } from '@tmo/books/data-access';
+import { addToReadingList, getAllBooks, getBooksError, getBooksLoaded } from '@tmo/books/data-access';
 import { Book } from '@tmo/shared/models';
 
 describe('ProductsListComponent', () => {
@@ -39,6 +39,13 @@ describe('ProductsListComponent', () => {
     expect(component).toBeDefined();
   });
 
+  it('format date should return formatted data', () => {
+
+    let result = component.formatDate('12/12/2020');
+    expect(result).toBe('12/12/2020');
+    result = component.formatDate('');
+    expect(result).toBeUndefined();
+  })
   it('should add book to reading list', () => {
     fixture.detectChanges();
     const book: Book = createBook('B');
@@ -67,11 +74,29 @@ describe('ProductsListComponent', () => {
   });
 
   it('should display No result found error message', () => {
-    component.searchForm.value.term = 'java123345435843fgjdsfj';
+    // component.searchForm.value.term = 'java123345435843fgjdsfj';
+    component.searchForm.controls.term.setValue('java123345435843fgjdsfj');
     store.overrideSelector(getBooksLoaded, false);
     store.overrideSelector(getBooksError, {
       error: {
         statusCode: 404,
+        message: "not found"
+      }
+    })
+    store.refreshState();
+    component.searchBooks();
+    fixture.detectChanges();
+    expect(component.books.length).toBe(0);
+    expect(component.errorFlag).toBe(true);
+    expect(component.errorContent).toBe("not found");
+  });
+
+  it('should display No result found error message', () => {
+    component.searchForm.value.term = 'java123345435843fgjdsfj';
+    store.overrideSelector(getBooksLoaded, false);
+    store.overrideSelector(getBooksError, {
+      error: {
+        statusCode: 422,
         message: "not found"
       }
     })
