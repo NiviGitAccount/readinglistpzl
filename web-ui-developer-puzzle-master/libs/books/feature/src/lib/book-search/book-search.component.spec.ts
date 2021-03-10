@@ -74,7 +74,6 @@ describe('ProductsListComponent', () => {
   });
 
   it('should display No result found error message', () => {
-    // component.searchForm.value.term = 'java123345435843fgjdsfj';
     component.searchForm.controls.term.setValue('java123345435843fgjdsfj');
     store.overrideSelector(getBooksLoaded, false);
     store.overrideSelector(getBooksError, {
