@@ -44,17 +44,6 @@ describe('Books Reducer', () => {
 
   });
 
-  describe('invalid Books actions', () => {
-    it('searchBooksFailure should return the errors occurred during search', () => {
-      const searchFailErr = BooksActions.searchBooksFailure({ error: 'error' });
-
-      const result: State = reducer(initialState, searchFailErr);
-
-      expect(result.loaded).toBe(false);
-      expect(result.error).toBeDefined();
-    });
-  });
-
   describe('unknown action', () => {
     it('should return the previous state', () => {
       const action = {} as any;
