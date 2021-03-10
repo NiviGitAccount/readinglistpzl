@@ -14,7 +14,7 @@
   </mat-form-field>
 </form>
 <div *ngIf="spinner">
-    <mat-spinner id="spinner"></mat-spinner>
+    <mat-spinner></mat-spinner>
 </div>
 <div *ngIf="errorFlag" class="alert alert-danger">
   {{errorContent}}
@@ -42,7 +42,6 @@
               color="primary"
               (click)="addBookToReadingList(b)"
               [disabled]="b.isAdded"
-              data-testing="book-item-read"
             >
               Want to Read
             </button>

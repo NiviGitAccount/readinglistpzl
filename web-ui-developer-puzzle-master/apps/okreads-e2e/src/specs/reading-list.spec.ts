@@ -1,4 +1,4 @@
-import { $, $$, browser, By, by, element, ExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, ExpectedConditions } from 'protractor';
 
 describe('When: I use the reading list feature', () => {
   it('Then: I should see my reading list', async () => {
