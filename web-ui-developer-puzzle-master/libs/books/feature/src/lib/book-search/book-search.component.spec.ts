@@ -55,7 +55,6 @@ describe('ProductsListComponent', () => {
 
   it('should  search books with the search term', () => {
     fixture.detectChanges();
-    // component.searchForm.value.term = 'science';
     component.searchForm.controls.term.setValue('java');
     store.overrideSelector(getBooksLoaded, true);
     store.overrideSelector(getAllBooks, [{ ...createBook('A'), isAdded: false }]);
@@ -74,7 +73,6 @@ describe('ProductsListComponent', () => {
   });
 
   it('should display No result found error message', () => {
-    // component.searchForm.value.term = 'java123345435843fgjdsfj';
     component.searchForm.controls.term.setValue('java123345435843fgjdsfj');
     store.overrideSelector(getBooksLoaded, false);
     store.overrideSelector(getBooksError, {
