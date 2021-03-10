@@ -28,7 +28,6 @@ describe('BooksEffects', () => {
   });
 
   describe('loadBooks$', () => {
-
     it('should work', done => {
       actions = new ReplaySubject();
       actions.next(BooksActions.searchBooks({ term: '' }));
@@ -42,7 +41,6 @@ describe('BooksEffects', () => {
 
       httpMock.expectOne('/api/books/search?q=').flush([createBook('A')]);
     });
-
 
     it('should invoke searchBooksFailure action on SEARCH fail', done => {
       actions = new ReplaySubject();
