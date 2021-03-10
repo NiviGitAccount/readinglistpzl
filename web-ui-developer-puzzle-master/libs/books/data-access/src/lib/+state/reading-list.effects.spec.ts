@@ -128,4 +128,39 @@ describe('ToReadEffects', () => {
       httpMock.expectOne('/api/reading-list/A').error(new ErrorEvent('Error'));
     });
   });
+
+
+  describe('markAsRead$', () => {
+    it('should work', done => {
+      actions = new ReplaySubject();
+      const item = createReadingListItem('A');
+      actions.next(ReadingListActions.markAsRead({ item }));
+
+      effects.markAsRead$.subscribe(action => {
+        expect(action).toEqual(
+          ReadingListActions.confirmedMarkAsRead({
+            item
+          })
+        );
+        done();
+      });
+
+      httpMock.expectOne('/api/reading-list/A/finished').flush([]);
+    });
+
+    it('should invoke failedMarkAsRead action on fail of markAsRead action', done => {
+      actions = new ReplaySubject();
+      const item = createReadingListItem('A');
+      actions.next(ReadingListActions.markAsRead({ item }));
+
+      effects.markAsRead$.subscribe(action => {
+        expect(action).toEqual(
+          ReadingListActions.failedMarkAsRead({ item })
+        );
+        done();
+      });
+
+      httpMock.expectOne('/api/reading-list/A/finished').error(new ErrorEvent('Error'));
+    });
+  });
 });

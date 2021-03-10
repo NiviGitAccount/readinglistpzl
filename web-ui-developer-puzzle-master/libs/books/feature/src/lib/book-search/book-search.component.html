@@ -14,7 +14,7 @@
   </mat-form-field>
 </form>
 <div *ngIf="spinner">
-    <mat-spinner></mat-spinner>
+  <mat-spinner></mat-spinner>
 </div>
 <div *ngIf="errorFlag" class="alert alert-danger">
   {{errorContent}}
@@ -37,13 +37,9 @@
           </div>
           <p [innerHTML]="b.description"></p>
           <div>
-            <button
-              mat-flat-button
-              color="primary"
-              (click)="addBookToReadingList(b)"
-              [disabled]="b.isAdded"
-            >
-              Want to Read
+            <button mat-flat-button color="primary" (click)="addBookToReadingList(b)"
+              [disabled]="b.isAdded || b.finished">
+              {{b.finished?'Finished':'Want to Read'}}
             </button>
           </div>
         </div>
@@ -55,9 +51,7 @@
   <div class="empty">
     <p>
       Try searching for a topic, for example "<button aria-label="JavaScript" (click)="searchExample()"
-      class="btn-link"
-        >JavaScript</button
-      >".
+        class="btn-link">JavaScript</button>".
     </p>
   </div>
 </ng-template>
