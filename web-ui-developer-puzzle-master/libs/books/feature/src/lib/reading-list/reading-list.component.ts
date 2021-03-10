@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { getReadingList, markAsRead, removeFromReadingList } from '@tmo/books/data-access';
-import { ReadingListItem } from '@tmo/shared/models';
 
 @Component({
   selector: 'tmo-reading-list',

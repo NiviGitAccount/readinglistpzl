@@ -5,7 +5,7 @@ import { ReadingListComponent } from './reading-list.component';
 import { BooksFeatureModule } from '@tmo/books/feature';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ReadingListItem } from '@tmo/shared/models';
-import { getReadingList, markAsRead, removeFromReadingList } from '@tmo/books/data-access';
+import { getReadingList, removeFromReadingList } from '@tmo/books/data-access';
 
 describe('ReadingListComponent', () => {
   let component: ReadingListComponent;

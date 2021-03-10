@@ -1,7 +1,6 @@
-import { HttpService, Injectable, HttpException, HttpStatus } from '@nestjs/common';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
+import { HttpException, HttpService, HttpStatus, Injectable } from '@nestjs/common';
 import { Book } from '@tmo/shared/models';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()

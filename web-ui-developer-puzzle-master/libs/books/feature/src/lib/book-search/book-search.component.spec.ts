@@ -6,7 +6,7 @@ import { BooksFeatureModule } from '../books-feature.module';
 import { BookSearchComponent } from './book-search.component';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { addToReadingList, clearSearch, getAllBooks, getBooksError, getBooksLoaded, searchBooks } from '@tmo/books/data-access';
+import { addToReadingList, getAllBooks, getBooksError, getBooksLoaded } from '@tmo/books/data-access';
 import { Book } from '@tmo/shared/models';
 
 describe('ProductsListComponent', () => {
