@@ -23,5 +23,5 @@ export class BooksEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly http: HttpClient
-  ) {}
+  ) { }
 }
