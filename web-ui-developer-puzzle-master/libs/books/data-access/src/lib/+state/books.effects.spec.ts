@@ -41,5 +41,20 @@ describe('BooksEffects', () => {
 
       httpMock.expectOne('/api/books/search?q=').flush([createBook('A')]);
     });
+
+    it('should invoke searchBooksFailure action on SEARCH fail', done => {
+      actions = new ReplaySubject();
+      actions.next(BooksActions.searchBooks({ term: '' }));
+
+      effects.searchBooks$.subscribe(action => {
+        expect(action.type).toEqual(
+          BooksActions.searchBooksFailure(new ErrorEvent('unknown_error')).type
+        );
+        done();
+      });
+
+      httpMock.expectOne('/api/books/search?q=').error(new ErrorEvent('unknown_error'));
+    });
+
   });
 });

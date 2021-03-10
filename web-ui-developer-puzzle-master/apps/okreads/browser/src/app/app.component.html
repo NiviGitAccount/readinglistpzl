@@ -5,6 +5,7 @@
         <h1>okreads</h1>
         <div>
           <button
+          class="btn_bckgrnd"
             data-testing="toggle-reading-list"
             mat-button
             (click)="drawer.toggle()"
@@ -23,7 +24,7 @@
     <div class="reading-list-container" data-testing="reading-list-container">
       <h2>
         My Reading List
-        <button mat-icon-button (click)="drawer.close()">
+        <button mat-icon-button (click)="drawer.close()" aria-label="close">
           <mat-icon>close</mat-icon>
         </button>
       </h2>

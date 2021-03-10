@@ -8,7 +8,7 @@ export const BOOKS_FEATURE_KEY = 'books';
 
 export interface State extends EntityState<Book> {
   loaded: boolean;
-  error?: string | null;
+  error?: string | null | {};
   searchTerm?: string;
 }
 
