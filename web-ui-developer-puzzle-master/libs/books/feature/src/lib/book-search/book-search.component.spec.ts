@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { createBook, SharedTestingModule } from '@tmo/shared/testing';
 
@@ -53,15 +53,16 @@ describe('ProductsListComponent', () => {
     expect(store.dispatch).toHaveBeenCalledWith(addToReadingList({ book }));
   });
 
-  it('should  search books with the search term', () => {
-    fixture.detectChanges();
-    component.searchForm.controls.term.setValue('java');
+  it('should  search books with the search term', fakeAsync(() => {
+    component.searchForm.controls.term.setValue('science');
     store.overrideSelector(getBooksLoaded, true);
     store.overrideSelector(getAllBooks, [{ ...createBook('A'), isAdded: false }]);
     store.refreshState();
     component.searchBooks();
+    tick(500);
+    fixture.detectChanges();
     expect(component.books.length).toBeGreaterThan(0);
-  });
+  }));
 
   it('should dispatch selector on Search query', () => {
     fixture.detectChanges();

@@ -12,6 +12,7 @@ import {
 import { FormBuilder } from '@angular/forms';
 import { Book } from '@tmo/shared/models';
 import { Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'tmo-book-search',
@@ -40,7 +41,29 @@ export class BookSearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
     this.componentSubcription.push(
+
+      this.searchForm.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe(term => {
+        this.searchBooks();
+      }),
+
+      this.store.select(getBooksError).subscribe((errorResponse => {
+        if (errorResponse) {
+          this.store.dispatch(clearSearch());
+          this.spinner = false;
+          this.errorFlag = true;
+          if (errorResponse['error'] && (errorResponse['error']['statusCode'] === 404
+            || errorResponse['error']['statusCode'] === 422)) {
+            this.errorContent = errorResponse['error']['message'];
+          } else {
+            this.errorContent = "Something went wrong! Couldn't fetch Book details for the given search term!";
+          }
+        } else {
+          this.errorFlag = false;
+        }
+      })),
+
       this.store.select(getAllBooks).subscribe(books => {
         this.books = books;
       }),
@@ -74,23 +97,6 @@ export class BookSearchComponent implements OnInit, OnDestroy {
       if (this.previousSearchTerm !== this.searchForm.value.term) {
         this.spinner = true;
         this.store.dispatch(searchBooks({ term: this.searchTerm }));
-        this.componentSubcription.push(
-          this.store.select(getBooksError).subscribe((errorResponse => {
-            if (errorResponse) {
-              this.store.dispatch(clearSearch());
-              this.spinner = false;
-              this.errorFlag = true;
-              if (errorResponse['error'] && (errorResponse['error']['statusCode'] === 404
-                || errorResponse['error']['statusCode'] === 422)) {
-                this.errorContent = errorResponse['error']['message'];
-              } else {
-                this.errorContent = "Something went wrong! Couldn't fetch Book details for the given search term!";
-              }
-            } else {
-              this.errorFlag = false;
-            }
-          }))
-        );
       }
     } else {
       this.store.dispatch(clearSearch());
