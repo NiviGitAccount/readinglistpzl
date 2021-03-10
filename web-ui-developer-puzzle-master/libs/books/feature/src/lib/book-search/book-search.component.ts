@@ -49,9 +49,7 @@ export class BookSearchComponent implements OnInit, OnDestroy {
       }),
 
       this.store.select(getBooksLoaded).subscribe((loaded => {
-        if (!loaded && this.searchForm.value.term) {
-          this.spinner = true;
-        } else {
+        if (loaded) {
           this.previousSearchTerm = this.searchForm.value.term;
           this.spinner = false;
         }

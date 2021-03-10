@@ -6,7 +6,7 @@ import { BooksFeatureModule } from '../books-feature.module';
 import { BookSearchComponent } from './book-search.component';
 
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { addToReadingList, clearSearch, getAllBooks, getBooksError, getBooksLoaded, removeFromReadingList, searchBooks } from '@tmo/books/data-access';
+import { addToReadingList, getAllBooks, getBooksError, getBooksLoaded, removeFromReadingList } from '@tmo/books/data-access';
 import { Book } from '@tmo/shared/models';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -50,6 +50,13 @@ describe('ProductsListComponent', () => {
     expect(component).toBeDefined();
   });
 
+  it('format date should return formatted data', () => {
+
+    let result = component.formatDate('12/12/2020');
+    expect(result).toBe('12/12/2020');
+    result = component.formatDate('');
+    expect(result).toBeUndefined();
+  })
   it('should add book to reading list', () => {
     fixture.detectChanges();
     const book: Book = createBook('B');
@@ -70,7 +77,7 @@ describe('ProductsListComponent', () => {
 
   it('should  search books with the search term', () => {
     fixture.detectChanges();
-    component.searchForm.value.term = 'science';
+    component.searchForm.controls.term.setValue('java');
     store.overrideSelector(getBooksLoaded, true);
     store.overrideSelector(getAllBooks, [{ ...createBook('A'), isAdded: false }]);
     store.refreshState();
@@ -88,7 +95,7 @@ describe('ProductsListComponent', () => {
   });
 
   it('should display No result found error message', () => {
-    component.searchForm.value.term = 'java123345435843fgjdsfj';
+    component.searchForm.controls.term.setValue('java123345435843fgjdsfj');
     store.overrideSelector(getBooksLoaded, false);
     store.overrideSelector(getBooksError, {
       error: {
